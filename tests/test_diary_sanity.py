@@ -1,9 +1,14 @@
 # runserver fixture
+from hamcrest import assert_that
 
-def test_login_page_loads_up():
-    # load up login page
-    # check if displayed
-    pass
+from conf.urls import LOGIN_PAGE
+from page_objects.login_page.login_page import LoginPage
+
+
+def test_login_page_loads_up(driver):
+    login_page = LoginPage(driver).open(LOGIN_PAGE)
+    login_page.wait_for_page_to_load(timeout=5)
+    assert_that(login_page.is_page_displayed(), "Login page is not displayed")
 
 
 def test_login_required():
