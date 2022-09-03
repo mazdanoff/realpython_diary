@@ -18,8 +18,11 @@ class AbsPageObject:
             return False
 
     def is_element_located_displayed(self, locator: Tuple[str, str]) -> bool:
-        element = self.driver.find_element(*locator)
-        return element.is_displayed()
+        try:
+            element = self.driver.find_element(*locator)
+            return element.is_displayed()
+        except NoSuchElementException:
+            return False
 
     def wait_for_presence_of_element_located(self, locator, timeout=30):
         try:
