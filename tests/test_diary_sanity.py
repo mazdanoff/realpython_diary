@@ -1,4 +1,4 @@
-import pytest
+from pytest import mark
 from hamcrest import assert_that
 
 from conf.urls import *
@@ -16,27 +16,36 @@ test_urls = [
 
 
 def test_login_page_loads_up(driver):
-    login_page = LoginPage(driver).open(LOGIN_PAGE)
+    """
+    Checking if server is alive
+    """
+    login_page = LoginPage(driver, url=MAIN_PAGE).open()
     login_page.wait_for_page_to_load(timeout=5)
     assert_that(login_page.is_page_displayed(), "Login page is not displayed")
 
 
-@pytest.mark.parametrize("url", test_urls)
+@mark.parametrize("url", test_urls)
 def test_login_required(driver, url):
     """
-    Visiting any diary page should redirect to login page
-    if user didn't log in first
+    If user didn't log in first, any diary page visit should be redirected to the login page
     """
-    page = DiaryPage(driver).open(url)
-    page.wait_for_page_to_load(timeout=5)
+    page = DiaryPage(driver, url=url).open()
+    login_page = LoginPage(driver)
+
+    login_page.wait_for_page_to_load(timeout=5)  # we expect a login page to be displayed
     assert_that(page.is_page_displayed() is False, f"URL: {url} is not redirecting to login page")
 
-    login_page = LoginPage(driver)
     assert_that(login_page.is_page_displayed(), "Login page is not displayed")
 
 
 def test_diary_page_login_logout(driver):
-    login_page = LoginPage(driver).open(MAIN_PAGE)
+    """
+    Verifying that:
+    - logging in is not broken
+    - main page is displayed
+    - logging in is required after logging out
+    """
+    login_page = LoginPage(driver, MAIN_PAGE).open()
     login_page.wait_for_page_to_load(5)
     assert_that(login_page.is_page_displayed(), "Login page is not displayed")
 
@@ -54,3 +63,7 @@ def test_diary_page_login_logout(driver):
     logout_page = LogoutPage(driver)
     logout_page.wait_for_page_to_load(5)
     assert_that(logout_page.is_page_displayed(), "Logout page is not displayed")
+
+    diary_page.open(MAIN_PAGE)
+    login_page.wait_for_page_to_load(5)  # we expect a login page to be displayed
+    assert_that(login_page.is_page_displayed(), "Login page is not displayed")

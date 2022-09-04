@@ -4,9 +4,9 @@
 
 {% block content %}
     <article>
-        <h2>{{ entry.date_created|date:'Y-m-d H:i' }}</h2>
-        <h3>{{ entry.title }}</h3>
-        <p>{{ entry.content }}</p>
+        <h2 id="entry-date-created">{{ entry.date_created|date:'Y-m-d H:i' }}</h2>
+        <h3 id="entry-title">{{ entry.title }}</h3>
+        <p id="entry-content">{{ entry.content }}</p>
     </article>
 <hr>
     <p>
