@@ -20,7 +20,7 @@ def driver():
 
 
 @fixture
-def login_session(driver, request):
+def separate_session(driver, request):
     """
     To handle each test case in separate session.
     If something goes awry, text next test case will still be in a separate session.
