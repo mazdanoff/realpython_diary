@@ -1,5 +1,8 @@
 import os
 
-PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-DRIVERS_DIR = os.path.join(PROJECT_PATH, "drivers")
-GECKODRIVER = os.path.join(DRIVERS_DIR, "geckodriver.exe")
+project_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+drivers_dir = os.path.join(project_path, "drivers")
+geckodriver = os.path.join(drivers_dir, "geckodriver.exe")
+
+database_path = os.path.join(project_path, "db.sqlite3")
