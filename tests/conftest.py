@@ -1,12 +1,9 @@
-from dataclasses import dataclass
-from datetime import datetime
-from sqlite3 import connect, Error
-
 from pytest import fixture
 from selenium.webdriver import Firefox
 from selenium.webdriver import FirefoxOptions
 
-from conf.paths import geckodriver, database_path
+from conf.paths import geckodriver
+from utils.db_conn_handler import DatabaseConnectionHandler
 
 
 @fixture
@@ -19,6 +16,11 @@ def driver():
     firefox.quit()
 
 
+@fixture
+def database():
+    db_conn_handler = DatabaseConnectionHandler()
+    with db_conn_handler as connection:
+        yield connection
 
 
 def pytest_addoption(parser):
