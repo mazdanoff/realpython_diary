@@ -1,4 +1,3 @@
-from datetime import datetime
 from hamcrest import assert_that
 from pytest import fixture
 
@@ -52,6 +51,18 @@ class TestDiary:
 
         delete_entry_from_db(test_entry)
 
+    def test_update_entry(self, driver, created_entry):
+
+        main_page = MainPage(driver)
+
+        entry = main_page.entry_list.get_entry(created_entry)
+        entry.title.click()
+
+        entry_page = EntryPage(driver)
+        assert_that(entry_page.entry_text == entry.content, "Opened entry's content does not match")
+
+        entry_page.edit.click()
+
     @fixture(autouse=True)
     def separate_session(self, driver, pytestconfig):
         """
@@ -75,7 +86,7 @@ class TestDiary:
         return database.delete_entry
 
     @fixture
-    def create_entry(self, database):
+    def created_entry(self, database):
         entry = DatabaseEntry.new()
         database.add_entry(entry)
         yield entry
