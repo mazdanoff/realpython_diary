@@ -1,16 +1,17 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
-from sqlite3 import Error, connect
+# from sqlite3 import Error, connect
+from django.db import connection
 
 from conf.paths import database_path
 
 
-class DatabaseError(Error):
+class DatabaseError(Exception):
     pass
 
 
 @dataclass
-class Entry:
+class DatabaseEntry:
     title: str
     content: str
 
@@ -22,35 +23,29 @@ class Entry:
 
 class DatabaseConnectionHandler:
 
-    def __init__(self, db_path=database_path):
-        self.conn = None
-        self.db_path = db_path
+    @staticmethod
+    def add_entry(entry: DatabaseEntry):
+        with connection.cursor() as conn:
+            conn.execute("INSERT INTO entries_entry (title, content)\n"
+                         f"VALUES ('{entry.title}', '{entry.content}')")
 
-    def __enter__(self):
-        try:
-            self.conn = connect(self.db_path)
-        except DatabaseError:
-            pass
-        return self
+    @staticmethod
+    def read_entries():
+        with connection.cursor() as conn:
+            conn.execute("SELECT * FROM entries_entry")
+            entries = list()
+            for e in conn.fetchall():
+                entry = DatabaseEntry(e.title, e.content)
+                entries.append(entry)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.conn.close()
+    @staticmethod
+    def update_entry(entry: DatabaseEntry):
+        with connection.cursor() as conn:
+            conn.execute("UPDATE entries_entry\n"
+                         f"SET content = '{entry.content}'"
+                         f"WHERE title = '{entry.title}'")
 
-    def add_entry(self, entry: Entry):
-        self.conn.execute("INSERT INTO entries_entry (title, content)\n"
-                          f"VALUES ('{entry.title}', '{entry.content}')")
-
-    def read_entries(self):
-        res = self.conn.execute("SELECT * FROM entries_entry")
-        entries = list()
-        for e in res.fetchall():
-            entry = Entry(e.title, e.content)
-            entries.append(entry)
-
-    def update_entry(self, entry: Entry):
-        self.conn.execute("UPDATE entries_entry\n"
-                          f"SET content = '{entry.content}'"
-                          f"WHERE title = '{entry.title}'")
-
-    def delete_entry(self, entry: Entry):
-        self.conn.execute(f"DELETE FROM entries_entry WHERE title = '{entry.title}'")
+    @staticmethod
+    def delete_entry(entry: DatabaseEntry):
+        with connection.cursor() as conn:
+            conn.execute(f"DELETE FROM entries_entry WHERE title = '{entry.title}'")

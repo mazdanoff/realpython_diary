@@ -8,7 +8,7 @@ from page_objects.diary_page.entry_page.entry_page import EntryPage
 from page_objects.diary_page.main_page.main_page import MainPage
 from page_objects.login_page.login_page import LoginPage
 from page_objects.logout_page.logout_page import LogoutPage
-from utils.db_conn_handler import Entry
+from utils.db_conn_handler import DatabaseEntry
 
 
 class TestDiary:
@@ -31,7 +31,7 @@ class TestDiary:
         create_entry_page = CreateEntryPage(driver)
 
         initial_entry_count = len(main_page.entry_list)
-        test_entry = Entry.new()
+        test_entry = DatabaseEntry.new()
 
         add_new_entry = main_page.add_new_entry
         add_new_entry.click()
@@ -76,6 +76,6 @@ class TestDiary:
 
     @fixture
     def create_entry(self, database):
-        entry = Entry.new()
+        entry = DatabaseEntry.new()
         database.add_entry(entry)
         yield entry
