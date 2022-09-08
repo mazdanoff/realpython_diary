@@ -19,8 +19,7 @@ def driver():
 @fixture
 def database():
     db_conn_handler = DatabaseConnectionHandler()
-    with db_conn_handler as connection:
-        yield connection
+    yield db_conn_handler
 
 
 def pytest_addoption(parser):
