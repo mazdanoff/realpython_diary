@@ -66,13 +66,15 @@ class TestDiary:
     def test_update_entry(self, driver, created_entry):
 
         # test data
-        new_entry = created_entry
         main_page = MainPage(driver)
         entry_page = EntryPage(driver)
         update_entry_page = UpdateEntryPage(driver)
+        new_entry = created_entry
+        main_page.wait_for_entry_to_appear_on_the_list(new_entry)
 
         # test body
         entry_element = main_page.entry_list.get_entry(new_entry)
+        assert_that(entry_element is not None, "Inserted entry does not appear on the list")
         entry_element.title.click()
 
         entry_page.wait_for_page_to_load(5)
