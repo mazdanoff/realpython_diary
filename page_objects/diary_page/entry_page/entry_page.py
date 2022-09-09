@@ -8,7 +8,7 @@ class EntryPage(DiaryPage):
 
     date_time = Text(Locators.DATE_TIME)
     title = Text(Locators.TITLE)
-    entry_text = Text(Locators.ENTRY_TEXT)
+    content = Text(Locators.ENTRY_TEXT)
 
     edit = Link(Locators.EDIT)
     delete = Link(Locators.DELETE)

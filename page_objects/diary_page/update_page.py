@@ -4,7 +4,7 @@ from .form_page_mixin_locators import FormPageMixinLocators as Locators
 from .form_page_mixin import FormPageMixin
 
 
-class CreateEntryPage(FormPageMixin, DiaryPage):
+class UpdateEntryPage(FormPageMixin, DiaryPage):
 
     def wait_for_page_to_load(self, timeout: int):
         self.wait_for_visibility_of_element_located(Locators.CONTENT, timeout=timeout)
@@ -17,7 +17,7 @@ class CreateEntryPage(FormPageMixin, DiaryPage):
         self.content.value = entry.content
 
     def _is_url_correct(self):
-        return "create" in self.driver.current_url
+        return "update" in self.driver.current_url
 
     def _is_content_field_displayed(self):
         return self.is_element_located_displayed(Locators.CONTENT)

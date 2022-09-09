@@ -26,8 +26,8 @@ class DatabaseConnectionHandler:
     @staticmethod
     def add_entry(entry: DatabaseEntry):
         with connection.cursor() as conn:
-            conn.execute("INSERT INTO entries_entry (title, content)\n"
-                         f"VALUES ('{entry.title}', '{entry.content}')")
+            conn.execute("INSERT INTO entries_entry (title, content, date_created)\n"
+                         f"VALUES ('{entry.title}', '{entry.content}', '{datetime.now()}')")
 
     @staticmethod
     def read_entries():
