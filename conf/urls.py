@@ -1,1 +1,1 @@
-MAIN_PAGE = 'http://127.0.0.1:8000'
+MAIN_PAGE_URL = 'http://127.0.0.1:8000'

@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
-# from sqlite3 import Error, connect
-from django.db import connection
 
-from conf.paths import database_path
+from django.db import connection
 
 
 class DatabaseError(Exception):
@@ -30,13 +28,15 @@ class DatabaseConnectionHandler:
                          f"VALUES ('{entry.title}', '{entry.content}', '{datetime.now()}')")
 
     @staticmethod
-    def read_entries():
+    def read_entries() -> list[DatabaseEntry]:
         with connection.cursor() as conn:
             conn.execute("SELECT * FROM entries_entry")
             entries = list()
             for e in conn.fetchall():
-                entry = DatabaseEntry(e.title, e.content)
+                title, content = e[1], e[2]
+                entry = DatabaseEntry(title, content)
                 entries.append(entry)
+        return entries
 
     @staticmethod
     def update_entry(entry: DatabaseEntry):
