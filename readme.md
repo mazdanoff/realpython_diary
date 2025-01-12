@@ -23,3 +23,8 @@ Set the env variable as well to use django's admin and directly access the datab
 More about Django's settings [here](https://docs.djangoproject.com/en/5.1/topics/settings/#the-django-admin-utility).
 
 The current repo's geckodriver proved to work with Firefox ver. 134.0 (64-bit). In case this is not working in the future, use Selenium Manager to gather the relevant driver.
+
+Next, run the Django server:\
+`python manage.py runserver`
+
+The default url should be sufficient for framework to display the page and be run tests against.
