@@ -1,5 +1,5 @@
 Django==5.1.4
 PyHamcrest
 pytest
-selenium
+selenium==4.27.1
 selenium-datatable
