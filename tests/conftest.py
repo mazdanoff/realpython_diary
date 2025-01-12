@@ -1,6 +1,5 @@
 from pytest import fixture
-from selenium.webdriver import Firefox
-from selenium.webdriver import FirefoxOptions
+from selenium.webdriver import Firefox, FirefoxOptions, FirefoxService
 
 from conf.paths import geckodriver
 from utils.db_conn_handler import DatabaseConnectionHandler
@@ -9,14 +8,17 @@ from utils.db_conn_handler import DatabaseConnectionHandler
 @fixture
 def driver():
     options = FirefoxOptions()
-    firefox = Firefox(options=options, executable_path=geckodriver)
+    options.add_argument("--headless")
+    # options.add_argument("--headless=new")
+    service = FirefoxService(executable_path=geckodriver)
+    firefox = Firefox(options=options, service=service)
     firefox.maximize_window()
     yield firefox
     firefox.close()
     firefox.quit()
 
 
-@fixture
+@fixture(scope="session")
 def database():
     db_conn_handler = DatabaseConnectionHandler()
     yield db_conn_handler

@@ -7,11 +7,11 @@ from page_objects.login_page.login_page import LoginPage
 from page_objects.logout_page.logout_page import LogoutPage
 
 test_urls = [
-    MAIN_PAGE,
-    f"{MAIN_PAGE}/create",
-    f"{MAIN_PAGE}/entry/1",
-    f"{MAIN_PAGE}/entry/1/update",
-    f"{MAIN_PAGE}/entry/1/delete",
+    MAIN_PAGE_URL,
+    f"{MAIN_PAGE_URL}/create",
+    f"{MAIN_PAGE_URL}/entry/1",
+    f"{MAIN_PAGE_URL}/entry/1/update",
+    f"{MAIN_PAGE_URL}/entry/1/delete",
 ]
 
 
@@ -19,7 +19,7 @@ def test_login_page_loads_up(driver):
     """
     Checking if server is alive
     """
-    login_page = LoginPage(driver, url=MAIN_PAGE).open()
+    login_page = LoginPage(driver, url=MAIN_PAGE_URL).open()
     login_page.wait_for_page_to_load(timeout=5)
     assert_that(login_page.is_page_displayed(), "Login page is not displayed")
 
@@ -45,7 +45,7 @@ def test_diary_page_login_logout(driver):
     - main page is displayed
     - logging in is required after logging out
     """
-    login_page = LoginPage(driver, MAIN_PAGE).open()
+    login_page = LoginPage(driver, MAIN_PAGE_URL).open()
     login_page.wait_for_page_to_load(5)
     assert_that(login_page.is_page_displayed(), "Login page is not displayed")
 
@@ -64,6 +64,6 @@ def test_diary_page_login_logout(driver):
     logout_page.wait_for_page_to_load(5)
     assert_that(logout_page.is_page_displayed(), "Logout page is not displayed")
 
-    diary_page.open(MAIN_PAGE)
+    diary_page.open(MAIN_PAGE_URL)
     login_page.wait_for_page_to_load(5)  # we expect a login page to be displayed
     assert_that(login_page.is_page_displayed(), "Login page is not displayed")

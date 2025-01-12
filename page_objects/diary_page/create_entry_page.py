@@ -4,7 +4,7 @@ from .form_page_mixin_locators import FormPageMixinLocators as Locators
 from .form_page_mixin import FormPageMixin
 
 
-class CreateEntryPage(FormPageMixin, DiaryPage):
+class CreateEntryPage(DiaryPage, FormPageMixin):
 
     def wait_for_page_to_load(self, timeout: int):
         self.wait_for_visibility_of_element_located(Locators.CONTENT, timeout=timeout)
