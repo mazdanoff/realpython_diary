@@ -17,7 +17,7 @@ test_urls = [
 
 def test_login_page_loads_up(driver):
     """
-    Checking if server is alive
+    Checks if server is online.
     """
     login_page = LoginPage(driver, url=MAIN_PAGE_URL).open()
     login_page.wait_for_page_to_load(timeout=5)
@@ -27,7 +27,8 @@ def test_login_page_loads_up(driver):
 @mark.parametrize("url", test_urls)
 def test_login_required(driver, url):
     """
-    If user didn't log in first, any diary page visit should be redirected to the login page
+    Verifies that login is required to view diaries' contents.
+    If user didn't log in first, any diary page visit should be redirected to the login page.
     """
     page = DiaryPage(driver, url=url).open()
     login_page = LoginPage(driver)
@@ -38,19 +39,20 @@ def test_login_required(driver, url):
     assert_that(login_page.is_page_displayed(), "Login page is not displayed")
 
 
-def test_diary_page_login_logout(driver):
+def test_diary_page_login_logout(driver, pytestconfig):
     """
-    Verifying that:
-    - logging in is not broken
+    Verifies that:
+    - logging in works as intended
     - main page is displayed
+    - logging out works as intended
     - logging in is required after logging out
     """
     login_page = LoginPage(driver, MAIN_PAGE_URL).open()
     login_page.wait_for_page_to_load(5)
     assert_that(login_page.is_page_displayed(), "Login page is not displayed")
 
-    login_page.username.value = "admin"
-    login_page.password.value = "1amp1amp"
+    login_page.username.value = pytestconfig.getini('username')
+    login_page.password.value = pytestconfig.getini('password')
     login_page.log_in.click()
 
     diary_page = DiaryPage(driver)
