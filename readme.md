@@ -1,6 +1,5 @@
 ## Diary test project
 
-This is a approach 
 This project aims to be an exercise for a given technology stack:
 - Python
 - Selenium
@@ -9,7 +8,7 @@ This project aims to be an exercise for a given technology stack:
 
 
 
-It was initially built thanks to RealPython's guide:\
+It was initially built thanks to RealPython's guide here:\
 `https://realpython.com/django-diary-project-python/`
 
 ### Setup
