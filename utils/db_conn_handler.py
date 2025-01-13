@@ -16,7 +16,7 @@ class DatabaseEntry:
     @classmethod
     def new(cls):
         time = datetime.now().strftime("%Y-%m-%d %H:%M")
-        return cls(f"New Entry: {time}", f"This was written at {time}")
+        return cls(f"New Test Entry: {time}", f"This was written at {time}")
 
 
 class DatabaseConnectionHandler:

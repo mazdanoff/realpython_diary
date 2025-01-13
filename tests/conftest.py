@@ -7,9 +7,9 @@ from utils.db_conn_handler import DatabaseConnectionHandler
 
 @fixture
 def driver():
+    """Sets up the driver to operate the browser automatically."""
     options = FirefoxOptions()
     options.add_argument("--headless")
-    # options.add_argument("--headless=new")
     service = FirefoxService(executable_path=geckodriver)
     firefox = Firefox(options=options, service=service)
     firefox.maximize_window()
@@ -20,10 +20,13 @@ def driver():
 
 @fixture(scope="session")
 def database():
+    """Yields a db connection, useful to set up data for tests and cleanup afterward."""
     db_conn_handler = DatabaseConnectionHandler()
     yield db_conn_handler
 
 
 def pytest_addoption(parser):
+    """Retrieve credentials from an ini file."""
+    # would probably be better to store these in env variables in a real setting
     parser.addini('username', help='Used to log in to diary')
     parser.addini('password', help='Used to log in to diary')
